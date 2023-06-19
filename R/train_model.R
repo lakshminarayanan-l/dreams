@@ -85,18 +85,18 @@ train_dreams_model <- function(training_data, layers,
 prepare_training_data <- function(training_data, model_features) {
 
   # Load training data
-  training_data <- training_data %>%
-    select(all_of(model_features), .data$obs) %>%
+  training_data <- training_data$data %>%
+    select(all_of(model_features), obs) %>%
     sample_frac(1)
 
   # Split data in features and labels
   training_data_features <-
     training_data %>%
-    select(-.data$obs)
+    select(obs)
 
   training_data_labels <-
     training_data %>%
-    select(.data$obs) %>%
+    select(obs) %>%
     mutate(obs = as.numeric(factor(.data$obs, levels = c("A", "T", "C", "G"))) - 1) %>%
     as.matrix() %>%
     keras::to_categorical()
